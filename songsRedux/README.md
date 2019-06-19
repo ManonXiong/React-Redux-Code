@@ -1,3 +1,5 @@
+This project is the first basic Redux App, showing a list of songs. The user can select a song from the list. Details of that selected song will be displayed.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
