@@ -7,7 +7,7 @@ export const fetchPosts = () => async dispatch => {
 
     dispatch( {
         type: 'FETCH_POSTS',
-        payload: response
+        payload: response.data
     })
 }
 

@@ -1,9 +1,16 @@
-import { arrayExpression } from "@babel/types";
+//This js file includes some rules of reducers in Redux Store Design.
 
-//This includes some rules of reducers in Redux Store Design.
-const postsReducers = (state=[], action) => {
-    if(action.type === 'FETCH_POSTS') {
-        return state.posts
+export default (state=[], action) => {
+    // Old way:
+    // if(action.type === 'FETCH_POSTS') {
+    //     return action.payload;
+    // }
+    // return state;
+    switch(action.type) {
+        case 'FETCH_POSTS':
+          return action.payload;
+        default:
+          return state;
     }
 }
 
@@ -22,3 +29,8 @@ const postsReducers = (state=[], action) => {
 // If state[key] is changed, haschange is assigned 'true' and a brand new state object is returned.
 // If a new state object is not returned, Redux won't tell other parts of the app that the data changed.
 // Remind: JavaScript check whether 2 arrays are the same by checking their memory location, not the content.
+
+//switch statement:
+//In an reducer, it's common to use 'switch' to handle all actions passed.
+
+//Syntax 'export default const postsReducer...' -- wrong

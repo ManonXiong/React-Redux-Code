@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
+import postsReducer from './postsReducer';
 
 //If there are more and more reducers, we need to separate them to different fiels, and import here.
-export default combinReducerss({})
+export default combineReducers({
+    posts: postsReducer
+})
 
 
 //Notes:
