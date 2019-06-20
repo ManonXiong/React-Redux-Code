@@ -1,3 +1,10 @@
+### App Goals
+This App is plain, but the goals are:
+1)understand the purpose of reducers
+2)understand making API requests with Redux
+3)understand the purpose of 'redux-thunk' (middleware)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
