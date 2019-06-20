@@ -5,7 +5,7 @@ import userReducer from './userReducer';
 //If there are more and more reducers, we need to separate them to different fiels, and import here.
 export default combineReducers({
     posts: postsReducer,
-    user: userReducer
+    users: userReducer
 })
 
 
