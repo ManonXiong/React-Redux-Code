@@ -1,5 +1,6 @@
 //Import the jsonplaceholder axios instance to the action creator file.
 import jsonplaceholder from "../apis/jsonplaceholder";
+import _ from 'lodash';
 
 //For more notes about fetching data in Redux, see Point 1 below.
 export const fetchPosts = () => async dispatch => {
@@ -11,14 +12,14 @@ export const fetchPosts = () => async dispatch => {
     })
 }
 
-export const fetchUser = id => async dispatch => {
-    const response = await jsonplaceholder.get(`/users/${id}`);
+// export const fetchUser = id => async dispatch => {
+//     const response = await jsonplaceholder.get(`/users/${id}`);
 
-    dispatch({
-        type: 'FETCH_USER',
-        payload: response.data
-    })
-}
+//     dispatch({
+//         type: 'FETCH_USER',
+//         payload: response.data
+//     })
+// }
 
 //Notes:
 //Point 1: wrong code
@@ -37,20 +38,21 @@ export const fetchUser = id => async dispatch => {
 //Error: Actions must be plain objects. --occurs, it doesn't return plain objects.
 //recap: jsonplaceholder.get('/posts') is a promise. Withouth async-await, we don't get data, but a promise.
 
-//Point 2: Redux Cycle
-//If a middleware is applied, the cycle is: Action Creator -> Actions -> Dispatch -> Middleware -> Reducer -> State
-//From calling an action creator to be dispatched in a reducer, just a millisecond is consumed.
-//So even dropping 'async..await' syntax, the error message disappeared, but it's not what we want. We get no data.
-
-//Point 3: Middleware
-//Middleware is a function that gets called with every action we dispatch
-//It has the ability to STOP, MODIFY, or otherwise mess around with actions
-//Tons of open source middleware exist. One popular use of middleware is for dealing with async actions
-
-//Point 4: What does Redux-Thunk do?
-//Rules of Thunk: action creators can return either action objects or functions.
-//If a function is returned, Thunk will invoke that function automatically. --> with Thunk, action creator can return a function
-//Thunk accepts something from the dispatch and decides what to do: actions? pass to reduers: invoke this function
-//If it's a function, Thunk pass 'dispatch' and 'getState' s params to this returned function.
-//Wait the request returned from API, and we can dispatch action MANUALLY. A new action is returned and thrown to Dispatch.
-//Dispatch passses this new action to Thunk, and Thunk(middleware) checks again.
+//Action creator 'fetchUser' overfetches the data repetively. We have to solve this overfetching problem.
+//Method 1: one time memoization
+//Code:
+export const fetchUser = id => dispatch => _fetchUser(id,dispatch);
+const _fetchUser = _.memoize(async (id, dispatch) => {
+    const response = await jsonplaceholder.get(`/users/${id}`);
+    dispatch({type: 'FETCH_USER', payload: response.data})
+})
+//Put a underscore "_" in front of the function name -- a private method
+//Use momoize function from lodash. This function will memorize the function passed after the inner function's invoked.
+//e.g. const memoizeGetUser = _.memoize(getUser);
+//memoizeGetUser(2); -- call it. 1st time: it fetch data from API. 2nd time: no log in network request
+//The getUser function has been memorized. 
+//It will refetch data from network only a different argument is passed, e.g. memoizeGetUser(2)
+//Steps:
+//1)move the original 'fetchUser' action's inner code to private method.
+//2)'id' and 'dispatch' should be passed as arguments. So, pass them to _.memoize(); and _fetchUser() in fetchUser;
+//3)await is in the private method, async should be moved to the private method, too.
