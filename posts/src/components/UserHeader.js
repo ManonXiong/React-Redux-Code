@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchUser } from '../actions';
+// import { fetchUser } from '../actions'; --see point 5
+
 
 class UserHeader extends React.Component {
-    componentDidMount() {
-        this.props.fetchUser(this.props.userId);
-    }
+    // componentDidMount() {
+    //     this.props.fetchUser(this.props.userId);
+    // } --see point 5
     render() {
     //   const user = this.props.users.find(user => user.id === this.props.userId); --see notes(2)
       const {user} = this.props;
@@ -23,7 +24,8 @@ const mapStateToProps = (state, ownProps) => {
     //Here, the key 'user' refers to props
 }
 
-export default connect(mapStateToProps, { fetchUser })(UserHeader);
+// export default connect(mapStateToProps, { fetchUser })(UserHeader); --see point 5
+export default connect(mapStateToProps)(UserHeader);
 
 //Notes:
 //1. Here, we use 'if(!user) {...}', because at the first initialization, we don't get data back.
@@ -40,3 +42,6 @@ export default connect(mapStateToProps, { fetchUser })(UserHeader);
 //Here, 'ownProps' is a reference to the props passed in the component.
 
 //4.ownProps --remember this concept
+
+//5.when fetchPostsAndUser is used, this fetchUser action can be commented out.
+//Everyting related to 'fetchUser' action can be commented out. We fetch user's data from PostList component.
