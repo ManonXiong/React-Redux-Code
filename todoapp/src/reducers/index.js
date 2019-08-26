@@ -28,7 +28,7 @@ function todosReducer(state = [], action) {
                 ...state,
                 {
                     text: action.text,
-                    completed: false //when an to-do is created first, definitely "completed:false"
+                    completed: true //when an to-do is created first, definitely "completed:false"
                 }// completed is not 'payload' of any action
             ]
         case TOGGLE_TODO:
@@ -37,7 +37,7 @@ function todosReducer(state = [], action) {
                 if (index === action.index) {
                     return {
                         ...todo,
-                        completed: false
+                        completed: true
                     }// todo here is an object in the array(state), todo = {text:"", completed: false}
                 }
                 return todo
